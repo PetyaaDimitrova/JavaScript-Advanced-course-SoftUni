@@ -5,4 +5,4 @@ function print(arr, delimiter){
     console.log(result);
 }
 
-print(['One','Two','Three','Four','Five'],'-')
+print(['How about no?', 'I', 'will', 'not', 'do', 'it!'], '_')
