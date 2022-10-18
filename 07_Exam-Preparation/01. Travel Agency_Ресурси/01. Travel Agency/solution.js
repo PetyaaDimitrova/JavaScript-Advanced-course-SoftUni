@@ -2,89 +2,65 @@ window.addEventListener('load', solution);
 
 function solution() {
   
-  document.getElementById("submitBTN").addEventListener("click", doReservation);
-  document.getElementById("editBTN").addEventListener("click", editReservation);
-  document.getElementById("continueBTN").addEventListener("click", continueWithReservation);
+  let submitBtn =  document.getElementById("submitBTN");
+  submitBtn.addEventListener("click", doReservation);
+  let editBtn = document.getElementById("editBTN");
+  editBtn.addEventListener("click", editReservation);
+  let continueBtn = document.getElementById("continueBTN");
+  continueBtn.addEventListener("click", continueWithReservation);
+  let block = document.getElementById("block");
 
+  submitBtn.disabled = false;
+  editBtn.disabled = true;
+  continueBtn.disabled = true;
 
-  let fullName = document.getElementById("fname");
-  let email = document.getElementById("email");
-  let phoneNumber = document.getElementById("phone");
-  let address = document.getElementById("address");
-  let postalCode = document.getElementById("code");
+  const inputValues = document.getElementById("form").querySelectorAll("input");
+  const labelValues = document.getElementById("form").querySelectorAll("label");
 
   let recievedSection = document.getElementById("infoPreview");
 
   function doReservation(e){
-    let fullNameValue = fullName.value;
-    let emailValue = email.value;
-    let phoneNumberValue = phoneNumber.value;
-    let addressValue = address.value;
-    let postalCodeValue = postalCode.value;
 
-    if (!fullNameValue || !emailValue || !phoneNumberValue || !addressValue || !postalCodeValue) {
+    if (inputValues[0].value === "" || inputValues[1].value === "") {
         return;
     }
-    createDOMElements(fullNameValue, emailValue, phoneNumberValue, addressValue, postalCodeValue);
-    clearFormField();
+
+    for(let i = 0; i<inputValues.length - 1 ; i++){
+
+      let li = document.createElement("li");
+      li.textContent = `${labelValues[i].textContent} ${inputValues[i].value}`;
+      recievedSection.appendChild(li);
+    }
+    for(let i = 0; i<inputValues.length - 1 ; i++){
+      inputValues[i].value = '';
+    }
+    e.target.disabled = true;
+    editBtn.disabled = false;
+    continueBtn.disabled = false;
   }
 
-  function clearFormField() {
-    fullName.value = "";
-    email.value = "";
-    phoneNumber.value = "";
-    address.value = "";
-    postalCode.value = "";
-}
-
-function createDOMElements(fullNameValue, emailValue, phoneNumberValue, addressValue, postalCodeValue){
-  let li = document.createElement("li");
-
-  let nameInfo = document.createElement("p");
-  nameInfo.textContent = `Full name: ${fullNameValue}`;
-  let emailInfo = document.createElement("p");
-  emailInfo.textContent = `Email: ${emailValue}`;
-  let phoneInfo = document.createElement("p");
-  phoneInfo.textContent = `Phone number: ${phoneNumberValue}`;
-  let addressInfo = document.createElement("p");
-  addressInfo.textContent = `Address: ${addressValue}`;
-  let codeInfo = document.createElement("p");
-  codeInfo.textContent = `Postal code: ${postalCodeValue}`;
-
-  li.appendChild(nameInfo);
-  li.appendChild(emailInfo);
-  li.appendChild(phoneInfo);
-  li.appendChild(addressInfo);
-  li.appendChild(codeInfo);
-
-  recievedSection.appendChild(li);
-
-}
-
-
+  
 
 function editReservation(e){
-  let currentPost = e.target.parentElement;
-  let articleContent = currentPost.getElementsByTagName("article")[0].children;
 
-  let nameValue = articleContent[0].textContent;
-  let emailValue = articleContent[1].textContent;
-  let phoneValue = articleContent[2].textContent;
-  let addressValue = articleContent[3].textContent;
-  let codeValue = articleContent[4].textContent;
+  let listItems = Array.from(recievedSection.children)
 
-  fullName.value = nameValue.split(" ")[1];
-  email.value = emailValue.split(" ")[1];
-  phoneNumber.value = phoneValue.split(" ")[1];
-  address.value = addressValue.split(" ")[1];
-  postalCode.value = codeValue.split(" ")[1];
-
-  currentPost.remove();
+  for(let i = 0; i<inputValues.length - 1; i++){
+    inputValues[i].value = listItems[i].textContent.split(": ")[1];
+  }
+  Array.from(recievedSection.children).forEach(li => li.remove())
+  submitBtn.disabled = false;
+  e.target.disabled = true;
+  continueBtn.disabled = true;
 }
 
 function continueWithReservation(e){
-  Array.from(recievedSection.children).forEach(li => li.remove())
+ document.getElementById("information").remove();
+ Array.from(block.children).forEach(li => li.remove())
 
+ let h = document.createElement("h3");
+ h.textContent = "Thank you for your reservation!";
+ block.appendChild(h);
 
 }
 
