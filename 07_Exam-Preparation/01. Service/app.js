@@ -87,8 +87,7 @@ function solve(event) {
 
     function clearPost(e) {
         let containers = document.querySelectorAll(".container");
-
-        Array.from(containers).forEach(container => container.remove())
+    Array.from(containers).forEach(container => container.remove())
 
     }
 
