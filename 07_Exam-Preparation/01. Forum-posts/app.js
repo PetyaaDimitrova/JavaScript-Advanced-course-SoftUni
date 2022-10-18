@@ -1,6 +1,6 @@
 window.addEventListener("load", solve);
 
-function solve(event){
+function solve(event) {
     document.getElementById("publish-btn").addEventListener("click", createPost);
     document.getElementById("clear-btn").addEventListener("click", clearPost);
 
@@ -10,12 +10,12 @@ function solve(event){
     let reviewSection = document.getElementById("review-list");
     let approveSection = document.getElementById("published-list");
 
-    function createPost(event){
+    function createPost(event) {
         let titleValue = title.value;
         let categoryValue = category.value;
         let contentValue = content.value;
 
-        if(!titleValue || !categoryValue || !contentValue){
+        if (!titleValue || !categoryValue || !contentValue) {
             return;
         }
 
@@ -23,13 +23,13 @@ function solve(event){
         clearFormField();
     }
 
-    function clearFormField(){
+    function clearFormField() {
         title.value = "";
         category.value = "";
         content.value = "";
     }
 
-    function createDOMElements(titleValue, categoryValue, contentValue){
+    function createDOMElements(titleValue, categoryValue, contentValue) {
         let li = document.createElement("li");
         li.classList.add("rpost");
         let article = createArticle(titleValue, categoryValue, contentValue);
@@ -40,7 +40,7 @@ function solve(event){
         editButton.textContent = "Edit";
         editButton.addEventListener("click", editPost);
 
-        
+
         let approveButton = document.createElement("button");
         approveButton.classList.add("action-btn");
         approveButton.classList.add("approve");
@@ -53,7 +53,7 @@ function solve(event){
         reviewSection.appendChild(li);
     }
 
-    function createArticle(titleValue, categoryValue, contentValue){
+    function createArticle(titleValue, categoryValue, contentValue) {
         let article = document.createElement("article");
 
         let h = document.createElement("h4");
@@ -73,7 +73,7 @@ function solve(event){
     }
 
 
-    function editPost(e){
+    function editPost(e) {
         let currentPost = e.target.parentElement;
         let articleContent = currentPost.getElementsByTagName("article")[0].children;
 
@@ -88,16 +88,15 @@ function solve(event){
         currentPost.remove();
     }
 
-    function approvePost(e){
+    function approvePost(e) {
         let currentPost = e.target.parentElement;
         approveSection.appendChild(currentPost);
 
         Array.from(currentPost.querySelectorAll("button")).forEach(btn => btn.remove())
     }
 
-    function clearPost(e){
+    function clearPost(e) {
         Array.from(approveSection.children).forEach(li => li.remove())
     }
-        
-    }
 
+}
