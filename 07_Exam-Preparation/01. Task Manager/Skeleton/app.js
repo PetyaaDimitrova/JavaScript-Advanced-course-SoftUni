@@ -1,62 +1,71 @@
 function solve() {
+  let open = document.getElementsByTagName('section')[1];
+  let inProgress = document.getElementsByTagName('section')[2];
+  let complete = document.getElementsByTagName('section')[3];
 
-    let addBtn = document.getElementById("add");
-    addBtn.addEventListener("click", addTask);
+  let task = document.getElementById('task');
+  let description = document.getElementById('description');
+  let dueDate = document.getElementById('date');
+  let btnAdd = document.getElementById('add');
 
-    const inputValues = document.getElementById("form").querySelectorAll("input");
-    const labelValues = document.getElementById("form").querySelectorAll("label");
+  function createElement(type, text, className) {
+      let result = document.createElement(type);
 
-    let openSection = document.getElementsByTagName('section')[1];
-    // let inProgressSection = document.querySelector("h1[class='yellow']");
-    // let completeSection = document.querySelector("h1[class='green']");
+      result.textContent = text;
 
-    function addTask(event) {
+      if (className) {
+          result.className = className;
+      }
+      return result;
+  }
+
+  btnAdd.addEventListener('click', e => {
+      e.preventDefault();
+
+      if (task.value == '' || description.value == '' || dueDate.value == '') {
+          return;
+      };
+
+      let article = createElement('article');
+      let h3 = createElement('h3', task.value);
+      let pDescription = createElement('p','Description: '+ description.value);
+      let pDueDate = createElement('p','Due Date: '+ dueDate.value);
+      let flexClass = createElement('div', undefined, 'flex');
+      let greenButton = createElement('button', 'Start', 'green')
+      let redButton = createElement('button', 'Delete', 'red');
+
+      flexClass.appendChild(greenButton);
+      flexClass.appendChild(redButton);
+
+      article.appendChild(h3);
+      article.appendChild(pDescription);
+      article.appendChild(pDueDate);
+      article.appendChild(flexClass);
+
+      open.children[1].appendChild(article);
+
+      task.value = '';
+      description.value = '';
+      dueDate.value = '';
+
+      redButton.addEventListener('click', e => {
+          article.remove();
+      });
 
 
-        if (inputValues[0].value === "" || inputValues[1].value === "" || inputValues[2] === "") {
-            return;
-        }
+      greenButton.addEventListener('click', e => {
+          inProgress.children[1].appendChild(article);
 
-        let startButton = document.createElement("button");
-        startButton.classList.add("button");
-        startButton.classList.add("start");
-        startButton.textContent = "Start";
-        startButton.addEventListener("click", startTask);
+          let finishButton = createElement('button', 'Finish', 'orange');
+          flexClass.removeChild(greenButton);
+          flexClass.appendChild(finishButton);
 
+          finishButton.addEventListener('click', e => {
+              flexClass.removeChild(finishButton);
+              flexClass.removeChild(redButton);
 
-        let deleteButton = document.createElement("button");
-        deleteButton.classList.add("button");
-        deleteButton.classList.add("delete");
-        deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", deleteTask);
-
-
-        for(let i = 0; i<inputValues.length  ; i++){
-
-            let li = document.createElement("li");
-            li.textContent = `${labelValues[i].textContent} ${inputValues[i].value}`;
-            openSection.appendChild(li);
-          }
-          for(let i = 0; i<inputValues.length - 1 ; i++){
-            inputValues[i].value = '';
-          }
-
-
-        li.appendChild(startButton);
-        li.appendChild(deleteButton);
-        openSection.appendChild(li);
-
-
-    }
-
-    
-
-    function deleteTask(e){
-
-    }
-
-    function startTask(e){
-
-    }
-
+              complete.children[1].appendChild(article);
+          })
+      })
+  })
 }
